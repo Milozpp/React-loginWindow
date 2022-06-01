@@ -39,7 +39,6 @@ export default function LoginWindow() {
     }
   };
 
-
   return (
     <> 
      <div className="div-wrapper">
