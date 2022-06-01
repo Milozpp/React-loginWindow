@@ -20,7 +20,7 @@ export default function LoginWindow() {
     console.log(formData)
     try {
       let res = await fetch("http://localhost/api/auth/login/", {
-        method: "POST",
+        method: "POST", 
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -28,7 +28,6 @@ export default function LoginWindow() {
         body: JSON.stringify({
           username: formData.username,
           password: formData.password,
-          remember: formData.remember
         }),
       });
       
