@@ -1,9 +1,12 @@
 import React from "react"
+import { Link } from 'react-router-dom'
+import './LoginWindow.css'
+import swal from 'sweetalert';
 
 export default function LoginWindow() {
 
-  const [formData, setFormData] = React.useState( {username: "", password: "", remember: true} )
 
+  const [formData, setFormData] = React.useState( {username: "", password: "", remember: true} )
 
   function handleChange(event) {
     const {name, value, type, checked} = event.target
@@ -17,7 +20,6 @@ export default function LoginWindow() {
 
   async function handleSubmit(event) {
     event.preventDefault() 
-    console.log(formData)
     try {
       let res = await fetch("http://localhost/api/auth/login/", {
         method: "POST", 
@@ -32,7 +34,14 @@ export default function LoginWindow() {
       });
       
       let resJson = await res.json();
-      console.log(resJson);
+
+      if (res.status !== 200) 
+        swal({
+          title: resJson.message,
+          icon: "warning",
+          dangerMode: true,
+          timer: 2500,
+        }) 
 
     } catch (err) {
       console.log(err);
@@ -41,8 +50,8 @@ export default function LoginWindow() {
 
   return (
     <> 
-     <div className="div-wrapper">
-       
+     <div className="div-wrapper">   
+             
        <h1> Login </h1>
        
        <form onSubmit={handleSubmit}> 
@@ -51,7 +60,7 @@ export default function LoginWindow() {
               type="text" 
               placeholder="Username"
               onChange={handleChange}
-              id="username" 
+              id="user" 
               name="username"
               value={formData.username}
             />
@@ -62,7 +71,7 @@ export default function LoginWindow() {
               type="password" 
               placeholder="Password"
               onChange={handleChange}
-              id="password" 
+              id="pass" 
               name="password"
               value={formData.password}
           />
@@ -76,7 +85,7 @@ export default function LoginWindow() {
                 onChange={handleChange}
                 id="remember"
                 name="remember"
-                checked={formData.remember}
+                value={formData.remember}
               />
             </label>
             <a href="www.google.com">Forgot your password?</a>
@@ -85,6 +94,12 @@ export default function LoginWindow() {
           <button type="submit"> LOGIN </button> 
         </div>
        </form>
+
+      <div className="div-new-user">
+        <label>
+          DON'T HAVE AN ACCOUNT? <Link to="/register">SIGN UP</Link>
+        </label>
+      </div>
      </div>
     </>
   );
